@@ -3,7 +3,6 @@ from uuid import uuid4
 
 from .modelos import Voo, Alerta, EventoAlerta
 
-
 class Detector:
     """
     Varre a lista de voos e aplica regras.

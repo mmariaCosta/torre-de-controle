@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from .modelos import Alerta, Estatisticas, Voo
 from .repositorio import repo
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Sobe o gerador quando a API inicia
@@ -15,7 +14,6 @@ async def lifespan(app: FastAPI):
     yield
     # Para quando a API desligar
     repo.parar()
-
 
 app = FastAPI(
     title="Torre de Controle API",
@@ -32,7 +30,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get("/")
 def raiz():
     return {
@@ -40,7 +37,6 @@ def raiz():
         "versao": "0.1.0",
         "status": "operacional",
     }
-
 
 @app.get("/health")
 def health():
@@ -95,6 +91,7 @@ def obter_stats():
         uptime="99.98%",
         ultimaVarredura=repo._ultima_varredura,
     )
+
 @app.post("/alertas/reset")
 def resetar_alertas():
     """Limpa todos os alertas. Útil para reiniciar a demonstração."""
