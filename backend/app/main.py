@@ -29,8 +29,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://torre-de-controle.vercel.app",
-        "https://torre-de-controle-6ycb.onrender.com",
+        "https://torre-de-controle-tawny.vercel.app",
     ],
     allow_methods=["*"],
     allow_headers=["*"],
