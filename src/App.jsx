@@ -69,29 +69,6 @@ function AppInner() {
     };
   }, []);
 
-  // Título dinâmico: mostra (N) quando há alertas pendentes
-  useEffect(() => {
-    const sessao = sessionStorage.getItem('tc_sessao');
-    if (!sessao) return;
-
-    const atualizarTitulo = async () => {
-      try {
-        const stats = await api.obterStats();
-        const pendentes = stats.alertasPendentes || 0;
-        document.title =
-          pendentes > 0
-            ? `(${pendentes}) Torre de Controle · Blue Team SOC`
-            : 'Torre de Controle · Blue Team SOC';
-      } catch {
-        document.title = 'Torre de Controle · Blue Team SOC';
-      }
-    };
-
-    atualizarTitulo();
-    const timer = setInterval(atualizarTitulo, 15000);
-    return () => clearInterval(timer);
-  }, []);
-
   const finalizarTour = () => {
     setTourAtivo(false);
     sessionStorage.setItem('tc_tour_visto', 'true');
