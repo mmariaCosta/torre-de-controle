@@ -37,4 +37,11 @@ export const api = {
       body: JSON.stringify({ status, controlador }),
     }),
   resetarAlertas: () => buscar('/alertas/reset', { method: 'POST' }),
+
+  // Investigação
+  buscarLogs: (tipo, valor) =>
+    buscar(`/logs/buscar?tipo=${encodeURIComponent(tipo)}&valor=${encodeURIComponent(valor)}`),
+  obterResumoLogs: () => buscar('/logs/resumo'),
+  listarIps: () => buscar('/logs/ips'),
+  listarPassageiros: () => buscar('/logs/passageiros'),
 };

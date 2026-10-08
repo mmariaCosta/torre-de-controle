@@ -1,26 +1,64 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <script>
-      (function() {
-        try {
-          var t = localStorage.getItem('@tc_theme') || 'dark';
-          document.documentElement.setAttribute('data-theme', t);
-        } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
-      })();
-    </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Torre de Controle · Blue Team SOC</title>
-    <meta name="description" content="Portfólio interativo de SOC simulado com foco em detecção de ameaças, análise de alertas e resposta a incidentes." />
-    <meta name="author" content="Maria Costa" />
-    <meta name="theme-color" content="#0a0e14" />
-  </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+
+  <!-- Título e descrição -->
+  <title>Torre de Controle · Blue Team SOC</title>
+  <meta
+    name="description"
+    content="Simulação interativa de SOC com detecção de ameaças em tempo real. Backend em Python gerando logs, front-end em React exibindo alertas com mapeamento MITRE ATT&CK."
+  />
+  <meta name="author" content="Maria Costa" />
+  <meta name="theme-color" content="#0a0e14" />
+
+  <!-- Open Graph (LinkedIn, Facebook, WhatsApp) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://torre-de-controle-tawny.vercel.app/" />
+  <meta property="og:title" content="Torre de Controle · Blue Team SOC" />
+  <meta
+    property="og:description"
+    content="SOC simulado com logs em tempo real, 3 regras de detecção e mapeamento MITRE ATT&CK. Projeto de portfólio de Maria Costa."
+  />
+  <meta property="og:image" content="https://torre-de-controle-tawny.vercel.app/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="pt_BR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Torre de Controle · Blue Team SOC" />
+  <meta
+    name="twitter:description"
+    content="SOC simulado com logs em tempo real, 3 regras de detecção e mapeamento MITRE ATT&CK."
+  />
+  <meta name="twitter:image" content="https://torre-de-controle-tawny.vercel.app/og-image.png" />
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tema inicial antes do React montar -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('@tc_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

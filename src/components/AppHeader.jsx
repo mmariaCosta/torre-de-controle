@@ -5,6 +5,7 @@ const NAV = [
   { to: '/painel', label: 'Painel' },
   { to: '/radar', label: 'Radar' },
   { to: '/historico', label: 'Histórico' },
+  { to: '/investigacao', label: 'Investigação' },
 ];
 
 export default function AppHeader() {

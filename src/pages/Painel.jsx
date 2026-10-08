@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AppHeader from '../components/AppHeader';
 import { api } from '../utils/api';
 import { voos as voosFallback, resumo, statusRadar as radarFallback } from '../utils/dados';
+import AvisoConexao from '../components/AvisoConexao';
 
 export default function Painel() {
   const sessao = JSON.parse(sessionStorage.getItem('tc_sessao')) || {};
@@ -81,6 +82,7 @@ export default function Painel() {
   return (
     <div className="app-shell">
       <AppHeader />
+      <AvisoConexao ativo={!apiOnline} />
 
       <main className="painel">
 

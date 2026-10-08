@@ -1,3 +1,4 @@
+from collections import Counter
 from contextlib import asynccontextmanager
 from datetime import datetime
 
@@ -98,3 +99,65 @@ def obter_stats():
         uptime="99.98%",
         ultimaVarredura=repo._ultima_varredura,
     )
+
+
+# ============================================================
+# INVESTIGAÇÃO — busca em logs
+# ============================================================
+@app.get("/logs/buscar", response_model=list[Voo])
+def buscar_logs(tipo: str, valor: str):
+    repo.varrer()
+    voos = repo.gerador.voos
+    valor_lower = valor.lower().strip()
+
+    if not valor_lower:
+        return []
+
+    if tipo == "ip":
+        return [v for v in voos if valor_lower in v.ip.lower()]
+
+    if tipo == "passageiro":
+        return [v for v in voos if valor_lower in v.passageiro.lower()]
+
+    if tipo == "status":
+        return [v for v in voos if v.status == valor_lower]
+
+    return []
+
+
+@app.get("/logs/resumo")
+def resumo_logs():
+    repo.varrer()
+    voos = repo.gerador.voos
+
+    total = len(voos)
+    autorizados = sum(1 for v in voos if v.status == "autorizado")
+    suspeitos = sum(1 for v in voos if v.status == "suspeito")
+    bloqueados = sum(1 for v in voos if v.status == "bloqueado")
+
+    ips = Counter(v.ip for v in voos if v.status != "autorizado")
+    top_ips = ips.most_common(3)
+
+    passageiros = Counter(v.passageiro for v in voos if v.status != "autorizado")
+    top_passageiros = passageiros.most_common(3)
+
+    return {
+        "total": total,
+        "autorizados": autorizados,
+        "suspeitos": suspeitos,
+        "bloqueados": bloqueados,
+        "top_ips": [{"ip": ip, "count": c} for ip, c in top_ips],
+        "top_passageiros": [{"passageiro": p, "count": c} for p, c in top_passageiros],
+    }
+
+
+@app.get("/logs/ips")
+def listar_ips():
+    repo.varrer()
+    return sorted(set(v.ip for v in repo.gerador.voos))
+
+
+@app.get("/logs/passageiros")
+def listar_passageiros():
+    repo.varrer()
+    return sorted(set(v.passageiro for v in repo.gerador.voos))

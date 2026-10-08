@@ -256,6 +256,20 @@ export default function VooDetalhe() {
                 Concluir
               </button>
             </div>
+            <button
+              type="button"
+              className="voo-acao voo-acao-sec"
+              onClick={() => {
+                const primeiroVoo = alerta.voos?.[0];
+                if (primeiroVoo) {
+                  navigate(`/investigacao?ip=${primeiroVoo.ip}`);
+                } else {
+                  navigate('/investigacao');
+                }
+              }}
+            >
+              Investigar logs
+            </button>
 
             <button
               type="button"

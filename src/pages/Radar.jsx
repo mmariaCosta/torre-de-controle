@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
 import { api } from '../utils/api';
 import { labels } from '../utils/dados';
+import AvisoConexao from '../components/AvisoConexao';
 
 const SEVERIDADES = [
   { valor: 'todas', label: 'Todas' },
@@ -87,6 +88,7 @@ export default function Radar() {
   return (
     <div className="app-shell">
       <AppHeader />
+      <AvisoConexao ativo={!apiOnline && !carregando} />
 
       <main className="radar">
         <div className="radar-head">
