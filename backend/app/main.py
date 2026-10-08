@@ -27,7 +27,11 @@ app = FastAPI(
 # Libera o front para consumir
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # em produção trocar pelo domínio do front
+    allow_origins=[
+        "http://localhost:5173",
+        "https://torre-de-controle.vercel.app",
+        "https://torre-de-controle-6ycb.onrender.com",
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
