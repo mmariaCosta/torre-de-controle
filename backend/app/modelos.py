@@ -3,14 +3,13 @@ from typing import Optional
 
 
 class Voo(BaseModel):
-    """Um voo é uma tentativa de acesso ao sistema."""
     id: str
     hora: str
     passageiro: str
     origem: str
     destino: str
     ip: str
-    status: str            # autorizado | suspeito | bloqueado
+    status: str
     motivo: str
     tecnica: Optional[str] = None
 
@@ -25,8 +24,8 @@ class EventoAlerta(BaseModel):
 class Alerta(BaseModel):
     id: str
     titulo: str
-    severidade: str        # critico | alto | medio | baixo
-    status: str            # aberto | investigando | escalado | concluido | falso_positivo
+    severidade: str
+    status: str
     tecnica: str
     tecnicaNome: str
     passageiro: str
@@ -37,6 +36,8 @@ class Alerta(BaseModel):
     descricao: str
     recomendacoes: list[str]
     voos: list[EventoAlerta]
+    resolvidoEm: Optional[str] = None
+    resolvidoPor: Optional[str] = None
 
 
 class Estatisticas(BaseModel):

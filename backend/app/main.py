@@ -7,13 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from .modelos import Alerta, Estatisticas, Voo
 from .repositorio import repo
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Sobe o gerador quando a API inicia
     repo.iniciar()
     yield
-    # Para quando a API desligar
     repo.parar()
+
 
 app = FastAPI(
     title="Torre de Controle API",
@@ -22,13 +22,13 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Libera o front para consumir
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/")
 def raiz():
@@ -38,6 +38,7 @@ def raiz():
         "status": "operacional",
     }
 
+
 @app.get("/health")
 def health():
     return {"status": "ok", "hora": datetime.now().isoformat()}
@@ -45,16 +46,20 @@ def health():
 
 @app.get("/voos", response_model=list[Voo])
 def listar_voos(limite: int = 50):
-    """Últimos voos gerados (mais recentes primeiro)."""
     repo.varrer()
     return repo.gerador.obter_recentes(limite=limite)
 
 
 @app.get("/alertas", response_model=list[Alerta])
 def listar_alertas():
-    """Todos os alertas ativos."""
     repo.varrer()
-    return repo.detector.listar_alertas()
+    return repo.listar_para_radar()
+
+
+@app.get("/historico", response_model=list[Alerta])
+def listar_historico():
+    repo.varrer()
+    return repo.listar_para_historico()
 
 
 @app.get("/alertas/{alerta_id}", response_model=Alerta)
@@ -69,10 +74,12 @@ def obter_alerta(alerta_id: str):
 @app.post("/alertas/{alerta_id}/status")
 def atualizar_status(alerta_id: str, payload: dict):
     novo_status = payload.get("status")
+    controlador = payload.get("controlador", "desconhecido")
+
     if not novo_status:
         raise HTTPException(status_code=400, detail="Status não informado")
 
-    sucesso = repo.atualizar_status(alerta_id, novo_status)
+    sucesso = repo.atualizar_status(alerta_id, novo_status, controlador)
     if not sucesso:
         raise HTTPException(status_code=404, detail="Alerta não encontrado")
 
@@ -91,9 +98,3 @@ def obter_stats():
         uptime="99.98%",
         ultimaVarredura=repo._ultima_varredura,
     )
-
-@app.post("/alertas/reset")
-def resetar_alertas():
-    """Limpa todos os alertas. Útil para reiniciar a demonstração."""
-    repo.detector.alertas.clear()
-    return {"ok": True, "mensagem": "Alertas reiniciados"}

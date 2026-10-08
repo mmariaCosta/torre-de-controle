@@ -6,6 +6,7 @@ import Painel from './pages/Painel';
 import Radar from './pages/Radar';
 import VooDetalhe from './pages/VooDetalhe';
 import Relatorio from './pages/Relatorio';
+import Historico from './pages/Historico';
 import Tour from './components/Tour';
 import Notificacao from './components/Notificacao';
 import { api } from './utils/api';
@@ -17,15 +18,12 @@ function RotaProtegida({ children }) {
 
 function BotaoTour({ onClick, running }) {
   const location = useLocation();
-
-  const dentroDePainelOuRadar = ['/painel', '/radar'].some((p) =>
+  const dentro = ['/painel', '/radar', '/historico'].some((p) =>
     location.pathname.startsWith(p)
   );
-
-  // Esconde na página de relatório individual
   const ehRelatorio = location.pathname.endsWith('/relatorio');
 
-  if (!dentroDePainelOuRadar || ehRelatorio || running) return null;
+  if (!dentro || ehRelatorio || running) return null;
 
   return (
     <button className="tour-launch" onClick={onClick} type="button">
@@ -92,6 +90,7 @@ function AppInner() {
         <Route path="/radar" element={<RotaProtegida><Radar /></RotaProtegida>} />
         <Route path="/radar/:id" element={<RotaProtegida><VooDetalhe /></RotaProtegida>} />
         <Route path="/radar/:id/relatorio" element={<RotaProtegida><Relatorio /></RotaProtegida>} />
+        <Route path="/historico" element={<RotaProtegida><Historico /></RotaProtegida>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

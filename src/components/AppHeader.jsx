@@ -4,13 +4,13 @@ import { useTheme } from '../hooks/useTheme';
 const NAV = [
   { to: '/painel', label: 'Painel' },
   { to: '/radar', label: 'Radar' },
+  { to: '/historico', label: 'Histórico' },
 ];
 
 export default function AppHeader() {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggle } = useTheme();
-
   const sessao = JSON.parse(sessionStorage.getItem('tc_sessao')) || {};
 
   const handleSair = () => {

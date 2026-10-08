@@ -12,24 +12,21 @@ export default function VooDetalhe() {
   const [erro, setErro] = useState(null);
   const [feedback, setFeedback] = useState(null);
 
-  // Busca o alerta na API
+  const sessao = JSON.parse(sessionStorage.getItem('tc_sessao')) || {};
+  const controlador = sessao.controlador || 'desconhecido';
+
   useEffect(() => {
     let ativo = true;
 
     const carregar = async () => {
-      console.log('[VooDetalhe] Buscando alerta:', id);
       setCarregando(true);
-
       try {
         const dados = await api.obterAlerta(id);
-        console.log('[VooDetalhe] Alerta recebido:', dados);
         if (!ativo) return;
         setAlerta(dados);
         setErro(null);
-      } catch (e) {
-        console.error('[VooDetalhe] Erro ao buscar:', e);
-        if (!ativo) return;
-        setErro('Alerta não encontrado');
+      } catch {
+        if (ativo) setErro('Alerta não encontrado');
       } finally {
         if (ativo) setCarregando(false);
       }
@@ -53,7 +50,7 @@ export default function VooDetalhe() {
     if (!cfg) return;
 
     try {
-      await api.atualizarStatus(alerta.id, cfg.novoStatus);
+      await api.atualizarStatus(alerta.id, cfg.novoStatus, controlador);
       setAlerta({ ...alerta, status: cfg.novoStatus });
       setFeedback(cfg.mensagem);
       setTimeout(() => setFeedback(null), 2600);
@@ -67,7 +64,6 @@ export default function VooDetalhe() {
     navigate(`/radar/${id}/relatorio`);
   };
 
-  // Estado de carregamento
   if (carregando) {
     return (
       <div className="app-shell">
@@ -82,7 +78,6 @@ export default function VooDetalhe() {
     );
   }
 
-  // Estado de erro
   if (erro || !alerta) {
     return (
       <div className="app-shell">
@@ -103,6 +98,7 @@ export default function VooDetalhe() {
   }
 
   const statusAtual = alerta.status;
+  const finalizado = statusAtual === 'concluido' || statusAtual === 'falso_positivo';
 
   return (
     <div className="app-shell">
@@ -207,53 +203,69 @@ export default function VooDetalhe() {
           </section>
         </div>
 
-        <div className="voo-acoes">
-          <div className="voo-acoes-grupo">
+        {finalizado ? (
+          <div className="voo-finalizado">
+            <div className="voo-finalizado-info">
+              <span className="voo-finalizado-lbl">Alerta finalizado</span>
+              <span className="voo-finalizado-val">
+                Resolvido em <strong>{alerta.resolvidoEm || '—'}</strong> por <strong>{alerta.resolvidoPor || '—'}</strong>
+              </span>
+            </div>
             <button
               type="button"
-              className={`voo-acao voo-acao-sec ${statusAtual === 'investigando' ? 'voo-acao-ativo' : ''}`}
-              onClick={() => handleAcao('investigar')}
-              disabled={statusAtual === 'investigando' || statusAtual === 'concluido'}
+              className="voo-acao voo-acao-primary"
+              onClick={irParaRelatorio}
             >
-              {statusAtual === 'investigando' ? '✓ Em investigação' : 'Marcar em investigação'}
-            </button>
-
-            <button
-              type="button"
-              className={`voo-acao voo-acao-sec ${statusAtual === 'falso_positivo' ? 'voo-acao-ativo' : ''}`}
-              onClick={() => handleAcao('falso')}
-              disabled={statusAtual === 'falso_positivo' || statusAtual === 'concluido'}
-            >
-              {statusAtual === 'falso_positivo' ? '✓ Falso positivo' : 'Falso positivo'}
-            </button>
-
-            <button
-              type="button"
-              className={`voo-acao voo-acao-warn ${statusAtual === 'escalado' ? 'voo-acao-ativo' : ''}`}
-              onClick={() => handleAcao('escalar')}
-              disabled={statusAtual === 'escalado' || statusAtual === 'concluido'}
-            >
-              {statusAtual === 'escalado' ? '✓ Escalado' : 'Escalar'}
-            </button>
-
-            <button
-              type="button"
-              className={`voo-acao voo-acao-ok ${statusAtual === 'concluido' ? 'voo-acao-ativo' : ''}`}
-              onClick={() => handleAcao('concluir')}
-              disabled={statusAtual === 'concluido'}
-            >
-              {statusAtual === 'concluido' ? '✓ Concluído' : 'Concluir'}
+              Emitir relatório do alerta
             </button>
           </div>
+        ) : (
+          <div className="voo-acoes">
+            <div className="voo-acoes-grupo">
+              <button
+                type="button"
+                className={`voo-acao voo-acao-sec ${statusAtual === 'investigando' ? 'voo-acao-ativo' : ''}`}
+                onClick={() => handleAcao('investigar')}
+                disabled={statusAtual === 'investigando'}
+              >
+                {statusAtual === 'investigando' ? '✓ Em investigação' : 'Marcar em investigação'}
+              </button>
 
-          <button
-            type="button"
-            className="voo-acao voo-acao-primary"
-            onClick={irParaRelatorio}
-          >
-            Emitir relatório do alerta
-          </button>
-        </div>
+              <button
+                type="button"
+                className="voo-acao voo-acao-sec"
+                onClick={() => handleAcao('falso')}
+              >
+                Falso positivo
+              </button>
+
+              <button
+                type="button"
+                className={`voo-acao voo-acao-warn ${statusAtual === 'escalado' ? 'voo-acao-ativo' : ''}`}
+                onClick={() => handleAcao('escalar')}
+                disabled={statusAtual === 'escalado'}
+              >
+                {statusAtual === 'escalado' ? '✓ Escalado' : 'Escalar'}
+              </button>
+
+              <button
+                type="button"
+                className="voo-acao voo-acao-ok"
+                onClick={() => handleAcao('concluir')}
+              >
+                Concluir
+              </button>
+            </div>
+
+            <button
+              type="button"
+              className="voo-acao voo-acao-primary"
+              onClick={irParaRelatorio}
+            >
+              Emitir relatório do alerta
+            </button>
+          </div>
+        )}
 
       </main>
 

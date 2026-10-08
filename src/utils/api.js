@@ -1,8 +1,5 @@
-// URL da API. Em produção, trocar pelo endereço do backend hospedado.
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
-// Timeout padrão para todas as requisições (ms)
-const TIMEOUT = 5000;
+const TIMEOUT = 45000;
 
 async function buscar(caminho, opcoes = {}) {
   const controller = new AbortController();
@@ -31,12 +28,13 @@ async function buscar(caminho, opcoes = {}) {
 export const api = {
   listarVoos: (limite = 50) => buscar(`/voos?limite=${limite}`),
   listarAlertas: () => buscar('/alertas'),
+  listarHistorico: () => buscar('/historico'),
   obterAlerta: (id) => buscar(`/alertas/${id}`),
   obterStats: () => buscar('/stats'),
-  atualizarStatus: (id, status) =>
+  atualizarStatus: (id, status, controlador) =>
     buscar(`/alertas/${id}/status`, {
       method: 'POST',
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({ status, controlador }),
     }),
   resetarAlertas: () => buscar('/alertas/reset', { method: 'POST' }),
 };
