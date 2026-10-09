@@ -3,6 +3,7 @@ import AppHeader from '../components/AppHeader';
 import { api } from '../utils/api';
 import { voos as voosFallback, resumo, statusRadar as radarFallback } from '../utils/dados';
 import AvisoConexao from '../components/AvisoConexao';
+import GraficoAlertas from '../components/GraficoAlertas';
 
 export default function Painel() {
   const sessao = JSON.parse(sessionStorage.getItem('tc_sessao')) || {};
@@ -136,6 +137,7 @@ export default function Painel() {
             <div className="kpi-note">Na fila da torre</div>
           </div>
         </div>
+        <GraficoAlertas />
 
         <div className="painel-grid">
           <section className="panel" data-tour="painel-voos">

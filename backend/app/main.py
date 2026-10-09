@@ -161,3 +161,116 @@ def listar_ips():
 def listar_passageiros():
     repo.varrer()
     return sorted(set(v.passageiro for v in repo.gerador.voos))
+
+@app.get("/protocolos")
+def listar_protocolos():
+    """Lista as regras de detecção ativas com estatísticas."""
+    repo.varrer()
+    todos = repo.detector.listar_alertas()
+
+    defs = [
+        {
+            "id": "P-001",
+            "nome": "Ataque coordenado",
+            "descricao": (
+                "Detecta múltiplas tentativas de login falhas do mesmo IP em "
+                "um curto intervalo. Indica tentativa de força bruta ou "
+                "password spraying contra uma conta específica."
+            ),
+            "regra": "5 ou mais falhas de login do mesmo IP em menos de 2 minutos",
+            "tecnica": "T1110.001",
+            "tecnicaNome": "Brute Force: Password Guessing",
+            "severidade": "alto",
+            "categoria": "Credential Access",
+            "match": lambda a: a.regra == "Ataque coordenado",
+        },
+        {
+            "id": "P-002",
+            "nome": "Origem incomum",
+            "descricao": (
+                "Detecta login de uma conta a partir de país diferente do "
+                "histórico habitual. Pode indicar credencial comprometida "
+                "sendo usada por terceiro."
+            ),
+            "regra": "Login de país sem histórico prévio para o usuário",
+            "tecnica": "T1078",
+            "tecnicaNome": "Valid Accounts",
+            "severidade": "medio",
+            "categoria": "Defense Evasion",
+            "match": lambda a: a.regra == "Passageiro de origem incomum",
+        },
+        {
+            "id": "P-003",
+            "nome": "Origem em lista negra",
+            "descricao": (
+                "Detecta tentativa de acesso a partir de IP já catalogado em "
+                "lista de ameaças conhecidas. Bloqueio aplicado "
+                "automaticamente antes mesmo de qualquer autenticação."
+            ),
+            "regra": "IP de origem presente em lista de ameaças conhecidas",
+            "tecnica": "T1078",
+            "tecnicaNome": "Valid Accounts",
+            "severidade": "critico",
+            "categoria": "Initial Access",
+            "match": lambda a: a.regra == "Origem suspeita",
+        },
+    ]
+
+    resultado = []
+    for d in defs:
+        matches = [a for a in todos if d["match"](a)]
+        ultimo = matches[0] if matches else None
+
+        resultado.append({
+            "id": d["id"],
+            "nome": d["nome"],
+            "descricao": d["descricao"],
+            "regra": d["regra"],
+            "tecnica": d["tecnica"],
+            "tecnicaNome": d["tecnicaNome"],
+            "severidade": d["severidade"],
+            "categoria": d["categoria"],
+            "disparos": len(matches),
+            "ultimoDisparo": ultimo.detectadoEm if ultimo else None,
+        })
+
+    return resultado
+
+@app.get("/stats/grafico")
+def stats_grafico():
+    """Alertas gerados por hora nas últimas 12 horas."""
+    repo.varrer()
+    todos = repo.detector.listar_alertas()
+
+    from datetime import datetime, timedelta
+    agora = datetime.now()
+    doze_horas = [agora - timedelta(hours=i) for i in range(11, -1, -1)]
+
+    # Inicializa buckets (uma posição por hora)
+    buckets = []
+    for h in doze_horas:
+        buckets.append({
+            "hora": h.strftime("%H:00"),
+            "alertas": 0,
+            "criticos": 0,
+        })
+
+    # Conta alertas por hora
+    for alerta in todos:
+        try:
+            # formato: "08/10/2026 18:52:26"
+            data_str = alerta.detectadoEm
+            dt = datetime.strptime(data_str, "%d/%m/%Y %H:%M:%S")
+
+            # Encontra o bucket correspondente
+            for b, h in zip(buckets, doze_horas):
+                # Se o alerta caiu na mesma hora
+                if dt.year == h.year and dt.month == h.month and dt.day == h.day and dt.hour == h.hour:
+                    b["alertas"] += 1
+                    if alerta.severidade == "critico":
+                        b["criticos"] += 1
+                    break
+        except Exception:
+            continue
+
+    return buckets

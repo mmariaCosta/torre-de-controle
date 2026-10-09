@@ -37,6 +37,8 @@ export const api = {
       body: JSON.stringify({ status, controlador }),
     }),
   resetarAlertas: () => buscar('/alertas/reset', { method: 'POST' }),
+  obterGraficoAlertas: () => buscar('/stats/grafico'),
+  listarProtocolos: () => buscar('/protocolos'),
 
   // Investigação
   buscarLogs: (tipo, valor) =>

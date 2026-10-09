@@ -4,6 +4,7 @@ import { useTheme } from '../hooks/useTheme';
 const NAV = [
   { to: '/painel', label: 'Painel' },
   { to: '/radar', label: 'Radar' },
+  { to: '/protocolos', label: 'Protocolos' },
   { to: '/historico', label: 'Histórico' },
   { to: '/investigacao', label: 'Investigação' },
 ];

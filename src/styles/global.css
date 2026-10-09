@@ -4157,3 +4157,290 @@ input, select, textarea { font-family: inherit; }
     gap: 10px;
   }
 }
+/* ============================================================
+   GRÁFICO DE ALERTAS
+   ============================================================ */
+.grafico-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px 20px;
+  margin-bottom: 40px;
+}
+
+.grafico-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.grafico-titulo {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+}
+
+.grafico-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.grafico-corpo {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grafico-vazio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+}
+
+.grafico-vazio-texto {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  padding: 40px 0;
+}
+
+@media (max-width: 720px) {
+  .grafico-panel {
+    padding: 20px 18px 16px;
+  }
+
+  .grafico-corpo {
+    min-height: 180px;
+  }
+}
+
+/* ============================================================
+   PROTOCOLOS
+   ============================================================ */
+.protocolos {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+  width: 100%;
+}
+
+.protocolos-head {
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.protocolos-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.protocolos-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+}
+
+.protocolos-meta-item.offline {
+  color: var(--warning);
+}
+
+.protocolos-meta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.protocolos-meta-item.offline .protocolos-meta-dot {
+  background: var(--warning);
+  box-shadow: 0 0 8px var(--warning);
+}
+
+.protocolos-meta-sep {
+  color: var(--text-dim);
+  opacity: 0.5;
+}
+
+.protocolos-title {
+  font-size: 2.2rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.protocolos-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.protocolos-sub {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 680px;
+}
+
+/* Lista */
+.protocolos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.protocolo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 24px 28px;
+  transition: border-color 0.15s;
+}
+
+.protocolo:hover {
+  border-color: var(--border-strong);
+}
+
+.protocolo-critico { border-left-color: var(--danger); }
+.protocolo-alto { border-left-color: #f97316; }
+.protocolo-medio { border-left-color: var(--warning); }
+.protocolo-baixo { border-left-color: var(--info); }
+
+.protocolo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.protocolo-head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.protocolo-id {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.protocolo-disparos {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  background: var(--accent-soft);
+  border-radius: 4px;
+}
+
+.protocolo-nome {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+}
+
+.protocolo-descricao {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0 0 22px;
+  max-width: 720px;
+}
+
+.protocolo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 32px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.protocolo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.protocolo-lbl {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.protocolo-valor {
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.protocolo-tecnica {
+  display: inline-block;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.protocolos-vazio {
+  padding: 80px 40px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+@media (max-width: 720px) {
+  .protocolos {
+    padding: 30px 20px 60px;
+  }
+
+  .protocolos-title {
+    font-size: 1.7rem;
+  }
+
+  .protocolo {
+    padding: 20px 22px;
+  }
+
+  .protocolo-nome {
+    font-size: 1.1rem;
+  }
+
+  .protocolo-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}

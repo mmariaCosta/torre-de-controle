@@ -11,6 +11,7 @@ import Tour from './components/Tour';
 import Notificacao from './components/Notificacao';
 import { api } from './utils/api';
 import Investigacao from './pages/Investigacao';
+import Protocolos from './pages/Protocolos';
 
 function RotaProtegida({ children }) {
   const sessao = sessionStorage.getItem('tc_sessao');
@@ -19,7 +20,7 @@ function RotaProtegida({ children }) {
 
 function BotaoTour({ onClick, running }) {
   const location = useLocation();
-  const dentro = ['/painel', '/radar', '/historico'].some((p) =>
+  const dentro = ['/painel', '/radar', '/protocolos', '/historico'].some((p) =>
     location.pathname.startsWith(p)
   );
   const ehRelatorio = location.pathname.endsWith('/relatorio');
@@ -93,6 +94,7 @@ function AppInner() {
         <Route path="/radar/:id/relatorio" element={<RotaProtegida><Relatorio /></RotaProtegida>} />
         <Route path="/historico" element={<RotaProtegida><Historico /></RotaProtegida>} />
         <Route path="/investigacao" element={<RotaProtegida><Investigacao /></RotaProtegida>} />
+        <Route path="/protocolos" element={<RotaProtegida><Protocolos /></RotaProtegida>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
