@@ -1,9 +1,13 @@
 # Torre de Controle
 
+[![Testes](https://github.com/mmariacosta/torre-de-controle/actions/workflows/tests.yml/badge.svg)](https://github.com/mmariacosta/torre-de-controle/actions/workflows/tests.yml)
+
 Simulação de um SOC (Security Operations Center) com geração de logs em tempo real, 3 regras de detecção baseadas em MITRE ATT&CK, terminal de investigação e histórico de incidentes. Cada log é um "voo", cada alerta é uma "aeronave suspeita", cada decisão é uma ação da torre.
 
 **Demo:** https://torre-de-controle-tawny.vercel.app/
-**API:** https://torre-de-controle-6ycb.onrender.com/docs
+**API:** https://torre-de-controle-6cby.onrender.com/docs
+
+---
 
 ---
 
@@ -559,12 +563,15 @@ docker compose up
 **Cold start:** o backend gratuito dorme após 15 minutos sem acesso. A primeira chamada depois disso demora 30-50 segundos. A faixa de aviso no front cobre isso.
 
 ---
-
 ## CI/CD
 
 GitHub Actions roda os testes do backend (pytest) e do frontend (vitest) a cada push na `main`. O workflow está em `.github/workflows/tests.yml`.
 
-O badge no topo do README mostra o status do último run.
+Os dois jobs rodam em paralelo:
+- **Backend (pytest):** 21 testes
+- **Frontend (vitest):** 23 testes
+
+O badge no topo mostra o status do último run. Se algum teste falhar, o badge fica vermelho e o commit aparece com ❌ no GitHub.
 
 ---
 
