@@ -162,6 +162,92 @@ def listar_passageiros():
     repo.varrer()
     return sorted(set(v.passageiro for v in repo.gerador.voos))
 
+@app.get("/relatorios/agregado")
+def relatorios_agregado():
+    """Estatísticas consolidadas do histórico de alertas resolvidos."""
+    repo.varrer()
+    alertas = repo.detector.listar_alertas()
+    resolvidos = [a for a in alertas if a.status in ("concluido", "falso_positivo")]
+
+    if not resolvidos:
+        return {
+            "total": 0,
+            "tempoMedio": None,
+            "porControlador": [],
+            "porSeveridade": [],
+            "porCategoria": [],
+            "porStatus": [],
+        }
+
+    # --- Tempo médio de resposta ---
+    from datetime import datetime
+    tempos = []
+    for a in resolvidos:
+        if not a.resolvidoEm or not a.detectadoEm:
+            continue
+        try:
+            det = datetime.strptime(a.detectadoEm, "%d/%m/%Y %H:%M:%S")
+            res = datetime.strptime(a.resolvidoEm, "%d/%m/%Y %H:%M:%S")
+            delta = (res - det).total_seconds()
+            if delta >= 0:
+                tempos.append(delta)
+        except Exception:
+            continue
+
+    tempo_medio = sum(tempos) / len(tempos) if tempos else None
+
+    # --- Por controlador ---
+    por_ctrl: dict[str, int] = {}
+    for a in resolvidos:
+        c = a.resolvidoPor or "desconhecido"
+        por_ctrl[c] = por_ctrl.get(c, 0) + 1
+
+    por_controlador = [
+        {"controlador": k, "total": v}
+        for k, v in sorted(por_ctrl.items(), key=lambda x: -x[1])
+    ]
+
+    # --- Por severidade ---
+    por_sev: dict[str, int] = {}
+    for a in resolvidos:
+        por_sev[a.severidade] = por_sev.get(a.severidade, 0) + 1
+
+    ordem_sev = ["critico", "alto", "medio", "baixo"]
+    por_severidade = [
+        {"severidade": s, "total": por_sev.get(s, 0)}
+        for s in ordem_sev
+        if por_sev.get(s, 0) > 0
+    ]
+
+    # --- Por categoria (regra) ---
+    por_cat: dict[str, int] = {}
+    for a in resolvidos:
+        por_cat[a.regra] = por_cat.get(a.regra, 0) + 1
+
+    por_categoria = [
+        {"categoria": k, "total": v}
+        for k, v in sorted(por_cat.items(), key=lambda x: -x[1])
+    ]
+
+    # --- Por status final ---
+    por_status: dict[str, int] = {}
+    for a in resolvidos:
+        por_status[a.status] = por_status.get(a.status, 0) + 1
+
+    por_status_lista = [
+        {"status": k, "total": v}
+        for k, v in sorted(por_status.items(), key=lambda x: -x[1])
+    ]
+
+    return {
+        "total": len(resolvidos),
+        "tempoMedio": tempo_medio,
+        "porControlador": por_controlador,
+        "porSeveridade": por_severidade,
+        "porCategoria": por_categoria,
+        "porStatus": por_status_lista,
+    }
+
 @app.get("/protocolos")
 def listar_protocolos():
     """Lista as regras de detecção ativas com estatísticas."""

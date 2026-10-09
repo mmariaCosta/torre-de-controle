@@ -4444,3 +4444,348 @@ input, select, textarea { font-family: inherit; }
     gap: 14px;
   }
 }
+/* ============================================================
+   RELATÓRIOS AGREGADOS
+   ============================================================ */
+.relatorios {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+  width: 100%;
+}
+
+.relatorios-head {
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.relatorios-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.relatorios-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+}
+
+.relatorios-meta-item.offline {
+  color: var(--warning);
+}
+
+.relatorios-meta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.relatorios-meta-item.offline .relatorios-meta-dot {
+  background: var(--warning);
+  box-shadow: 0 0 8px var(--warning);
+}
+
+.relatorios-meta-sep {
+  color: var(--text-dim);
+  opacity: 0.5;
+}
+
+.relatorios-title {
+  font-size: 2.2rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.relatorios-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.relatorios-sub {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 680px;
+}
+
+/* Resumo */
+.relatorios-resumo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.relatorios-resumo-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+
+.relatorios-resumo-lbl {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.relatorios-resumo-val {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.relatorios-resumo-val.accent {
+  color: var(--accent);
+}
+
+/* Blocos */
+.relatorio-bloco {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+
+.relatorio-bloco-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.relatorio-bloco-head h2 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.relatorio-bloco-export {
+  padding: 6px 14px;
+  border-radius: 5px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.relatorio-bloco-export:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Barras horizontais */
+.relatorio-barras {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.relatorio-barra-linha {
+  display: grid;
+  grid-template-columns: 200px 1fr 48px;
+  gap: 16px;
+  align-items: center;
+}
+
+.relatorio-barra-lbl {
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.relatorio-barra-track {
+  height: 8px;
+  background: var(--surface-3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.relatorio-barra-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #22c55e);
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 4px;
+}
+
+.relatorio-barra-val {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Severidades */
+.relatorio-sev-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.relatorio-sev-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.relatorio-sev-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.relatorio-sev-total {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.relatorio-sev-track {
+  height: 6px;
+  background: var(--surface-3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.relatorio-sev-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 4px;
+}
+
+/* Status final */
+.relatorio-status-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.relatorio-status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.relatorio-status-item:last-child {
+  border-bottom: none;
+}
+
+.relatorio-status-total {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Vazio */
+.relatorios-vazio {
+  padding: 80px 40px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.relatorios-vazio-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--surface-3);
+  margin: 0 auto 20px;
+}
+
+.relatorios-vazio-titulo {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.relatorios-vazio-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 900px) {
+  .relatorios-resumo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .relatorios {
+    padding: 30px 20px 60px;
+  }
+
+  .relatorios-title {
+    font-size: 1.7rem;
+  }
+
+  .relatorios-resumo {
+    grid-template-columns: 1fr;
+  }
+
+  .relatorio-bloco {
+    padding: 20px 22px;
+  }
+
+  .relatorio-barra-linha {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .relatorio-barra-lbl {
+    font-weight: 400;
+  }
+
+  .relatorio-barra-val {
+    text-align: left;
+  }
+}

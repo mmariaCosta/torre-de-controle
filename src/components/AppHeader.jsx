@@ -6,6 +6,7 @@ const NAV = [
   { to: '/radar', label: 'Radar' },
   { to: '/protocolos', label: 'Protocolos' },
   { to: '/historico', label: 'Histórico' },
+  { to: '/relatorios', label: 'Relatórios' },
   { to: '/investigacao', label: 'Investigação' },
 ];
 

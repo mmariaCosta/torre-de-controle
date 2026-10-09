@@ -39,6 +39,7 @@ export const api = {
   resetarAlertas: () => buscar('/alertas/reset', { method: 'POST' }),
   obterGraficoAlertas: () => buscar('/stats/grafico'),
   listarProtocolos: () => buscar('/protocolos'),
+  obterRelatorioAgregado: () => buscar('/relatorios/agregado'),
 
   // Investigação
   buscarLogs: (tipo, valor) =>

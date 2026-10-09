@@ -18,8 +18,6 @@ const STATUSES = [
   { valor: 'aberto', label: 'Abertos' },
   { valor: 'investigando', label: 'Investigando' },
   { valor: 'escalado', label: 'Escalados' },
-  { valor: 'falso_positivo', label: 'Falsos positivos' },
-  { valor: 'concluido', label: 'Concluídos' },
 ];
 
 export default function Radar() {
