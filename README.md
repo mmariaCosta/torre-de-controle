@@ -1,5 +1,7 @@
 # Torre de Controle
 
+[![Testes](https://github.com/mmariacosta/torre-de-controle/actions/workflows/tests.yml/badge.svg)](https://github.com/mmariacosta/torre-de-controle/actions/workflows/tests.yml)
+
 Simulação de um SOC (Security Operations Center) com foco em detecção de ameaças, análise de alertas e resposta a incidentes. Cada log é um "voo", cada alerta é uma "aeronave suspeita", cada decisão é uma ação da torre.
 
 **Demo:** https://torre-de-controle-tawny.vercel.app/
